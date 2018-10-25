@@ -10,14 +10,18 @@ import UIKit
 
 class FilesDelegateDataSource: NSObject, UITableViewDelegate, UITableViewDataSource {
     
-    let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+    static let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     var filesTree: FilesTree
-    var controller: UIViewController, mainController: ViewController
+    var controller: UIViewController, mainController: ViewController, filesListController: FilesListViewController
     
-    init(filesTree: FilesTree, controller: UIViewController, mainController: ViewController) {
+    // Selection checkbox list
+    var selectionCheckbox: [CustomCheckbox] = []
+    
+    init(filesTree: FilesTree, controller: UIViewController, mainController: ViewController, filesListController: FilesListViewController) {
         self.filesTree = filesTree
         self.controller = controller
         self.mainController = mainController
+        self.filesListController = filesListController
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -28,10 +32,18 @@ class FilesDelegateDataSource: NSObject, UITableViewDelegate, UITableViewDataSou
         return filesTree.childFiles.count
     }
     
+    func checkboxList() {
+        for _ in 0..<filesTree.childFiles.count {
+            selectionCheckbox.append(CustomCheckbox(frame: CGRect(x: 0, y: 0, width: 30, height: 30), filesListDataSource: self))
+        }
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
         
-        cell.accessoryView = CustomCheckbox(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+        checkboxList()
+        
+        cell.accessoryView = selectionCheckbox[indexPath.row]
         
         let fileOrDir = filesTree.childFiles[indexPath.row]
         
@@ -61,7 +73,7 @@ class FilesDelegateDataSource: NSObject, UITableViewDelegate, UITableViewDataSou
         
             attributesLabel.textColor = .gray
             
-            attributesLabel.text = attributesString(fileName: fileOrDir)
+            attributesLabel.text = FilesDelegateDataSource.attributesString(fileName: fileOrDir)
         } else {
             cell.textLabel?.text = fileOrDir.name
         }
@@ -82,18 +94,21 @@ class FilesDelegateDataSource: NSObject, UITableViewDelegate, UITableViewDataSou
             let nextController = FilesListViewController(mainController: mainController, filesTree: fileOrDir)
             controller.navigationController?.pushViewController(nextController, animated: true)
         } else {
-            mainController.fileName.text = fileOrDir.name
-            if let previewImage = fileOrDir.preview {
-                mainController.preview.image = previewImage
-            }
-            mainController.fileAttributes.text = attributesString(fileName: fileOrDir)
-            mainController.fileURL.text = fileOrDir.urlString ?? ""
+            mainController.selectedFiles = [fileOrDir]
+            mainController.pages = [FileViewController(backgroundColor: .blue, file: fileOrDir), FileViewController(backgroundColor: .green, file: fileOrDir)]
+            
+            mainController.pageView.dataSource = nil // old page view's cache bug
+            mainController.pageView.setViewControllers([mainController.pages[0]], direction: .forward, animated: true, completion: nil)
+            mainController.pageView.dataSource = mainController
+            
+            /*mainController.
+            */
             
             _ = controller.navigationController?.popToViewController(mainController, animated: true)
         }
     }
     
-    func attributesString(fileName: FilesTree) -> String {
+    static func attributesString(fileName: FilesTree) -> String {
         var size: Int = fileName.size!
         var units = ""
         if size >= 1024 * 1024 {
@@ -125,9 +140,9 @@ class FilesDelegateDataSource: NSObject, UITableViewDelegate, UITableViewDataSou
         var attributes = ""
         
         if calendar.component(.year, from: Date()) != year {
-            attributes = "\(String(describing: size)) \(units) - \(months[month - 1]) \(day), \(year)"
+            attributes = "\(String(describing: size)) \(units) - \(FilesDelegateDataSource.months[month - 1]) \(day), \(year)"
         } else {
-            attributes = "\(String(describing: size)) \(units) - \(months[month - 1]) \(day)"
+            attributes = "\(String(describing: size)) \(units) - \(FilesDelegateDataSource.months[month - 1]) \(day)"
         }
         
         return attributes

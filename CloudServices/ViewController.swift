@@ -17,25 +17,51 @@ extension UINavigationBar {
     }
 }
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UIPageViewControllerDelegate, UIPageViewControllerDataSource {
+    
+    var pageView: UIPageViewController!
+    var pages: [UIViewController] = []
+    let pageControl = UIPageControl()
     
     // Navigation bar
     let defaultTitle = "Cloud Services"
     
-    // File preview
-    let preview = UIImageView()
-    
-    // Selected file name
-    var fileName = UILabel()
-    
     // File previews
     var filesTree = FilesTree(isDirectory: true, name: "Dummy")
     
-    // Selected file size/modified
-    var fileAttributes = UILabel()
+    // Selected files
+    var selectedFiles: [FilesTree] = []
     
-    // Selected file URL
-    var fileURL = UILabel()
+    func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
+        print("Fgfgf")
+    }
+    
+    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+        if !completed {
+            print("DID NOT CHANGE")
+        }
+        print("CHANGED")
+    }
+    
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
+        print("GHGHGH")
+        let currentIndex = pages.index(of: viewController)!
+        if currentIndex == 0 {
+            return nil
+        }
+        let previousIndex = abs((currentIndex - 1) % pages.count)
+        return pages[previousIndex]
+    }
+    
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
+        print("GHGHGH")
+        let currentIndex = pages.index(of: viewController)!
+        if currentIndex == pages.count - 1 {
+            return nil
+        }
+        let nextIndex = abs((currentIndex + 1) % pages.count)
+        return pages[nextIndex]
+    }
     
     // Применение AutoLayout к элементу на экране
     static func performAutolayoutConstants(subview: UIView, view: UIView, left: CGFloat, right: CGFloat, top: CGFloat, bottom: CGFloat) {
@@ -164,6 +190,33 @@ class ViewController: UIViewController {
         
         view.backgroundColor = .white
         
+        pages.append(FileViewController(backgroundColor: .red))
+        
+        /*let fileControllerA = FileViewController(backgroundColor: .red)
+        let fileControllerB = FileViewController(backgroundColor: .green)
+        let fileControllerC = FileViewController(backgroundColor: .blue)
+        
+        pages.append(fileControllerA)
+        pages.append(fileControllerB)
+        pages.append(fileControllerC)*/
+        
+        pageView = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
+        pageView.delegate = self
+        pageView.dataSource = self
+        pageView.setViewControllers([pages[0]], direction: .forward, animated: true, completion: nil)
+        
+        pageView.view.frame = CGRect(x: 0, y: 0, width: 320, height: 568)
+        view.addSubview(pageView.view)
+        
+        /*pageControl.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height)
+        pageControl.currentPageIndicatorTintColor = .black
+        pageControl.pageIndicatorTintColor = .lightGray
+        pageControl.numberOfPages = 3
+        pageControl.currentPage = 0
+        view.addSubview(pageControl)
+        view.bringSubview(toFront: pageControl)*/
+        
+        
         // Navigation bar
         navigationItem.title = defaultTitle
         let selectButton = UIBarButtonItem(title: "Select", style: .plain, target: self, action: #selector(self.selectFiles(sender:)))
@@ -171,31 +224,6 @@ class ViewController: UIViewController {
         
         // Recursive files list
         filesTree = dropboxFilesList(path: "")
-        
-        // Selected file name
-        fileName.textAlignment = .center
-        fileName.text = "No file selected"
-        view.addSubview(fileName)
-        ViewController.performAutolayoutConstants(subview: fileName, view: view, left: 0.0, right: 0.0, top: view.frame.height / 2 - 150, bottom: -(view.frame.height / 2 + 150 - 30))
-        
-        // Selected file preview
-        preview.image = UIImage(named: "dummyFile.png")
-        view.addSubview(preview)
-        ViewController.performAutolayoutConstants(subview: preview, view: view, left: 0.0, right: 0.0, top: view.frame.height / 2 - 100, bottom: -(view.frame.height / 2 + 100 - view.frame.width))
-        
-        // Selected file size/modified
-        fileAttributes.textAlignment = .center
-        fileAttributes.textColor = .gray
-        fileAttributes.text = ""
-        view.addSubview(fileAttributes)
-        ViewController.performAutolayoutConstants(subview: fileAttributes, view: view, left: 0.0, right: 0.0, top: view.frame.height / 2 + 220, bottom: -(view.frame.height / 2 - 220 - 30))
-        
-        // Selected file URL
-        fileURL.textAlignment = .center
-        fileURL.textColor = .gray
-        fileURL.text = ""
-        view.addSubview(fileURL)
-        ViewController.performAutolayoutConstants(subview: fileURL, view: view, left: 0.0, right: 0.0, top: view.frame.height / 2 + 240, bottom: -(view.frame.height / 2 - 240 - 30))
     }
 
     override func didReceiveMemoryWarning() {

@@ -13,10 +13,12 @@ class CustomCheckbox: UIView {
     var isChecked: Bool = false
     let imageView: UIImageView
     let tapRecognizer: UITapGestureRecognizer
+    let filesListDataSource: FilesDelegateDataSource?
     
-    override init(frame: CGRect) {
+    init(frame: CGRect, filesListDataSource: FilesDelegateDataSource) {
         imageView = UIImageView(frame: frame)
         tapRecognizer = UITapGestureRecognizer()
+        self.filesListDataSource = filesListDataSource
         super.init(frame: frame)
         
         addSubview(imageView)
@@ -28,6 +30,7 @@ class CustomCheckbox: UIView {
     required init?(coder aDecoder: NSCoder) {
         imageView = UIImageView(frame: .zero)
         tapRecognizer = UITapGestureRecognizer(target: nil, action: nil)
+        filesListDataSource = nil
         super.init(coder: aDecoder)
     }
     
@@ -38,6 +41,20 @@ class CustomCheckbox: UIView {
             imageView.image = UIImage(named: "unchecked.png")
         }
         imageView.setNeedsDisplay()
+        
+        var selectedCount = 0
+        for nth in (filesListDataSource?.selectionCheckbox)! {
+            if nth.isChecked {
+                selectedCount += 1
+            }
+        }
+        print(selectedCount)
+        if selectedCount > 0 {
+            filesListDataSource?.filesListController.attachButton.setTitle("Attach \(selectedCount)", for: .normal)
+            filesListDataSource?.filesListController.attachButton.isHidden = false
+        } else {
+            filesListDataSource?.filesListController.attachButton.isHidden = true
+        }
     }
     
     func checkboxAction(recognizer: UITapGestureRecognizer) {

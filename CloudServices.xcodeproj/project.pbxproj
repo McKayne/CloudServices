@@ -24,6 +24,7 @@
 		7FC91E9B2181EC46008A156C /* dummyFile.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FC91E9A2181EC46008A156C /* dummyFile.png */; };
 		7FC91E9D2181EDBA008A156C /* unchecked.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FC91E9C2181EDBA008A156C /* unchecked.png */; };
 		7FC91E9F2181EE2E008A156C /* checked.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FC91E9E2181EE2E008A156C /* checked.png */; };
+		7FC91EA12181F6F7008A156C /* FileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FC91EA02181F6F7008A156C /* FileViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +68,7 @@
 		7FC91E9A2181EC46008A156C /* dummyFile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dummyFile.png; sourceTree = SOURCE_ROOT; };
 		7FC91E9C2181EDBA008A156C /* unchecked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unchecked.png; sourceTree = SOURCE_ROOT; };
 		7FC91E9E2181EE2E008A156C /* checked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checked.png; sourceTree = SOURCE_ROOT; };
+		7FC91EA02181F6F7008A156C /* FileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileViewController.swift; sourceTree = "<group>"; };
 		9DD52C1B02102F8ABB8A1F6F /* Pods_CloudServices.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CloudServices.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F8272B904E5E4434364D21D6 /* Pods-CloudServices.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CloudServices.release.xcconfig"; path = "Pods/Target Support Files/Pods-CloudServices/Pods-CloudServices.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -124,6 +126,7 @@
 			children = (
 				7FC6BF4D2180CACB003A50E2 /* AppDelegate.swift */,
 				7FC6BF4F2180CACB003A50E2 /* ViewController.swift */,
+				7FC91EA02181F6F7008A156C /* FileViewController.swift */,
 				7FC91E9C2181EDBA008A156C /* unchecked.png */,
 				7FC91E982181E690008A156C /* CustomCheckbox.swift */,
 				7FC91E9E2181EE2E008A156C /* checked.png */,
@@ -362,6 +365,7 @@
 			files = (
 				7FC6BF7C2180CDBF003A50E2 /* FilesDelegateDataSource.swift in Sources */,
 				7FC6BF502180CACB003A50E2 /* ViewController.swift in Sources */,
+				7FC91EA12181F6F7008A156C /* FileViewController.swift in Sources */,
 				7FC6BF7E2180D0F2003A50E2 /* DropboxFile.swift in Sources */,
 				7FC6BF4E2180CACB003A50E2 /* AppDelegate.swift in Sources */,
 				7FC91E992181E690008A156C /* CustomCheckbox.swift in Sources */,
