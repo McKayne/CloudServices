@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0E7B5E6CE3BC3F619572730D /* Pods_CloudServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DD52C1B02102F8ABB8A1F6F /* Pods_CloudServices.framework */; };
 		7FC6BF4E2180CACB003A50E2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FC6BF4D2180CACB003A50E2 /* AppDelegate.swift */; };
 		7FC6BF502180CACB003A50E2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FC6BF4F2180CACB003A50E2 /* ViewController.swift */; };
 		7FC6BF532180CACB003A50E2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7FC6BF512180CACB003A50E2 /* Main.storyboard */; };
@@ -14,6 +15,15 @@
 		7FC6BF582180CACB003A50E2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7FC6BF562180CACB003A50E2 /* LaunchScreen.storyboard */; };
 		7FC6BF632180CACB003A50E2 /* CloudServicesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FC6BF622180CACB003A50E2 /* CloudServicesTests.swift */; };
 		7FC6BF6E2180CACB003A50E2 /* CloudServicesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FC6BF6D2180CACB003A50E2 /* CloudServicesUITests.swift */; };
+		7FC6BF7C2180CDBF003A50E2 /* FilesDelegateDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FC6BF7B2180CDBE003A50E2 /* FilesDelegateDataSource.swift */; };
+		7FC6BF7E2180D0F2003A50E2 /* DropboxFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FC6BF7D2180D0F2003A50E2 /* DropboxFile.swift */; };
+		7FC6BF802180D3C1003A50E2 /* test.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FC6BF7F2180D3C1003A50E2 /* test.png */; };
+		7FC6BF822180E4F5003A50E2 /* FilesTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FC6BF812180E4F5003A50E2 /* FilesTree.swift */; };
+		7FC6BF842180EFC5003A50E2 /* FilesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FC6BF832180EFC5003A50E2 /* FilesListViewController.swift */; };
+		7FC91E992181E690008A156C /* CustomCheckbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FC91E982181E690008A156C /* CustomCheckbox.swift */; };
+		7FC91E9B2181EC46008A156C /* dummyFile.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FC91E9A2181EC46008A156C /* dummyFile.png */; };
+		7FC91E9D2181EDBA008A156C /* unchecked.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FC91E9C2181EDBA008A156C /* unchecked.png */; };
+		7FC91E9F2181EE2E008A156C /* checked.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FC91E9E2181EE2E008A156C /* checked.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,6 +44,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0E21D4D7CCED4B3A1F1AF29E /* Pods-CloudServices.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CloudServices.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CloudServices/Pods-CloudServices.debug.xcconfig"; sourceTree = "<group>"; };
 		7FC6BF4A2180CACB003A50E2 /* CloudServices.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CloudServices.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7FC6BF4D2180CACB003A50E2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7FC6BF4F2180CACB003A50E2 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -47,6 +58,17 @@
 		7FC6BF692180CACB003A50E2 /* CloudServicesUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CloudServicesUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7FC6BF6D2180CACB003A50E2 /* CloudServicesUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudServicesUITests.swift; sourceTree = "<group>"; };
 		7FC6BF6F2180CACB003A50E2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7FC6BF7B2180CDBE003A50E2 /* FilesDelegateDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilesDelegateDataSource.swift; sourceTree = "<group>"; };
+		7FC6BF7D2180D0F2003A50E2 /* DropboxFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropboxFile.swift; sourceTree = "<group>"; };
+		7FC6BF7F2180D3C1003A50E2 /* test.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = test.png; sourceTree = SOURCE_ROOT; };
+		7FC6BF812180E4F5003A50E2 /* FilesTree.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilesTree.swift; sourceTree = "<group>"; };
+		7FC6BF832180EFC5003A50E2 /* FilesListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilesListViewController.swift; sourceTree = "<group>"; };
+		7FC91E982181E690008A156C /* CustomCheckbox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCheckbox.swift; sourceTree = "<group>"; };
+		7FC91E9A2181EC46008A156C /* dummyFile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dummyFile.png; sourceTree = SOURCE_ROOT; };
+		7FC91E9C2181EDBA008A156C /* unchecked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unchecked.png; sourceTree = SOURCE_ROOT; };
+		7FC91E9E2181EE2E008A156C /* checked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checked.png; sourceTree = SOURCE_ROOT; };
+		9DD52C1B02102F8ABB8A1F6F /* Pods_CloudServices.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CloudServices.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F8272B904E5E4434364D21D6 /* Pods-CloudServices.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CloudServices.release.xcconfig"; path = "Pods/Target Support Files/Pods-CloudServices/Pods-CloudServices.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +76,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0E7B5E6CE3BC3F619572730D /* Pods_CloudServices.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -81,6 +104,8 @@
 				7FC6BF612180CACB003A50E2 /* CloudServicesTests */,
 				7FC6BF6C2180CACB003A50E2 /* CloudServicesUITests */,
 				7FC6BF4B2180CACB003A50E2 /* Products */,
+				F8B8EC0E9102A1736493EB0C /* Pods */,
+				E32C979763A23EE0717F8D08 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -99,6 +124,15 @@
 			children = (
 				7FC6BF4D2180CACB003A50E2 /* AppDelegate.swift */,
 				7FC6BF4F2180CACB003A50E2 /* ViewController.swift */,
+				7FC91E9C2181EDBA008A156C /* unchecked.png */,
+				7FC91E982181E690008A156C /* CustomCheckbox.swift */,
+				7FC91E9E2181EE2E008A156C /* checked.png */,
+				7FC91E9A2181EC46008A156C /* dummyFile.png */,
+				7FC6BF832180EFC5003A50E2 /* FilesListViewController.swift */,
+				7FC6BF812180E4F5003A50E2 /* FilesTree.swift */,
+				7FC6BF7D2180D0F2003A50E2 /* DropboxFile.swift */,
+				7FC6BF7F2180D3C1003A50E2 /* test.png */,
+				7FC6BF7B2180CDBE003A50E2 /* FilesDelegateDataSource.swift */,
 				7FC6BF512180CACB003A50E2 /* Main.storyboard */,
 				7FC6BF542180CACB003A50E2 /* Assets.xcassets */,
 				7FC6BF562180CACB003A50E2 /* LaunchScreen.storyboard */,
@@ -125,6 +159,23 @@
 			path = CloudServicesUITests;
 			sourceTree = "<group>";
 		};
+		E32C979763A23EE0717F8D08 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9DD52C1B02102F8ABB8A1F6F /* Pods_CloudServices.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F8B8EC0E9102A1736493EB0C /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				0E21D4D7CCED4B3A1F1AF29E /* Pods-CloudServices.debug.xcconfig */,
+				F8272B904E5E4434364D21D6 /* Pods-CloudServices.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -132,9 +183,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7FC6BF722180CACB003A50E2 /* Build configuration list for PBXNativeTarget "CloudServices" */;
 			buildPhases = (
+				0782D907867D1610C0913D68 /* [CP] Check Pods Manifest.lock */,
 				7FC6BF462180CACB003A50E2 /* Sources */,
 				7FC6BF472180CACB003A50E2 /* Frameworks */,
 				7FC6BF482180CACB003A50E2 /* Resources */,
+				D7F68FE2C443FEC5544635F5 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -238,6 +291,10 @@
 				7FC6BF582180CACB003A50E2 /* LaunchScreen.storyboard in Resources */,
 				7FC6BF552180CACB003A50E2 /* Assets.xcassets in Resources */,
 				7FC6BF532180CACB003A50E2 /* Main.storyboard in Resources */,
+				7FC91E9B2181EC46008A156C /* dummyFile.png in Resources */,
+				7FC91E9F2181EE2E008A156C /* checked.png in Resources */,
+				7FC91E9D2181EDBA008A156C /* unchecked.png in Resources */,
+				7FC6BF802180D3C1003A50E2 /* test.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -257,13 +314,59 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		0782D907867D1610C0913D68 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-CloudServices-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D7F68FE2C443FEC5544635F5 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-CloudServices/Pods-CloudServices-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftyDropbox/SwiftyDropbox.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyDropbox.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-CloudServices/Pods-CloudServices-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		7FC6BF462180CACB003A50E2 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7FC6BF7C2180CDBF003A50E2 /* FilesDelegateDataSource.swift in Sources */,
 				7FC6BF502180CACB003A50E2 /* ViewController.swift in Sources */,
+				7FC6BF7E2180D0F2003A50E2 /* DropboxFile.swift in Sources */,
 				7FC6BF4E2180CACB003A50E2 /* AppDelegate.swift in Sources */,
+				7FC91E992181E690008A156C /* CustomCheckbox.swift in Sources */,
+				7FC6BF842180EFC5003A50E2 /* FilesListViewController.swift in Sources */,
+				7FC6BF822180E4F5003A50E2 /* FilesTree.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -413,6 +516,7 @@
 		};
 		7FC6BF732180CACB003A50E2 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0E21D4D7CCED4B3A1F1AF29E /* Pods-CloudServices.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 4GZ5T9GPNN;
@@ -426,6 +530,7 @@
 		};
 		7FC6BF742180CACB003A50E2 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F8272B904E5E4434364D21D6 /* Pods-CloudServices.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 4GZ5T9GPNN;
@@ -514,6 +619,7 @@
 				7FC6BF742180CACB003A50E2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		7FC6BF752180CACB003A50E2 /* Build configuration list for PBXNativeTarget "CloudServicesTests" */ = {
 			isa = XCConfigurationList;
@@ -522,6 +628,7 @@
 				7FC6BF772180CACB003A50E2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		7FC6BF782180CACB003A50E2 /* Build configuration list for PBXNativeTarget "CloudServicesUITests" */ = {
 			isa = XCConfigurationList;
@@ -530,6 +637,7 @@
 				7FC6BF7A2180CACB003A50E2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
