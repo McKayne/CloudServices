@@ -168,11 +168,11 @@ class ViewController: UIViewController, UIPageViewControllerDelegate, UIPageView
         super.viewDidLoad()
         
         // Аутентификация пользователя
-        /*DropboxClientsManager.authorizeFromController(UIApplication.shared,
+        DropboxClientsManager.authorizeFromController(UIApplication.shared,
                                                       controller: self,
                                                       openURL: { (url: URL) -> Void in
                                                         UIApplication.shared.openURL(url)
-        })*/
+        })
         
         // Построение дерева файлов
         filesTree = dropboxFilesList(path: "")
