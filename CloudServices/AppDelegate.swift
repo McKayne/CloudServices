@@ -13,12 +13,25 @@ import SwiftyDropbox
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    static var dropboxEmail: String?
 
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
         if let authResult = DropboxClientsManager.handleRedirectURL(url) {
             switch authResult {
             case .success:
                 print("Success! User is logged into Dropbox.")
+                
+                if let client = DropboxClientsManager.authorizedClient {
+                    client.users.getCurrentAccount().response { response, error in
+                        if let account = response {
+                            print("USER")
+           
+                            AppDelegate.dropboxEmail = account.email
+                            ViewController.accountLabel.text = AppDelegate.dropboxEmail
+                            print(account.email)
+                        }
+                    }
+                }
             case .cancel:
                 print("Authorization flow was manually canceled by user!")
             case .error(_, let description):

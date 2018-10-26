@@ -8,12 +8,18 @@
 
 import UIKit
 
-class FilesListViewController: UIViewController {
+class FilesListViewController: UIViewController, UISearchBarDelegate {
     
     var refreshControl = UIRefreshControl()
     
     // Main screen
     var mainController: ViewController?
+    
+    // Email label
+    let emailLabel = UILabel()
+    
+    // Search bar
+    let searchBar = UISearchBar()
     
     // Files list
     var filesTree: FilesTree?
@@ -41,11 +47,96 @@ class FilesListViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //override func loadView() {
-    //}
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        print("SEARCHING")
+    }
+    
+    func searchForText(text: String, files: FilesTree, found: inout [FilesTree]) -> [FilesTree] {
+        for nth in files.childFiles {
+            if nth.isDirectory {
+                found = searchForText(text: text, files: nth, found: &found)
+            } else if nth.name.lowercased().contains(text.lowercased()) {
+                found.append(nth)
+            }
+        }
+        
+        return found
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        print("SEARCH START")
+        
+        searchBar.endEditing(true)
+        
+        var found: [FilesTree] = []
+        found = searchForText(text: searchBar.text!, files: filesTree!, found: &found)
+        print("Found \(found.count)")
+        
+        let searchController = SearchViewController(searchText: searchBar.text!, files: found, mainController: mainController!)
+        navigationController?.pushViewController(searchController, animated: true)
+        searchBar.text = ""
+    }
+    
+    func cancelAction(sender: UIBarButtonItem) {
+        if !attachButton.isHidden {
+            let alert = UIAlertController(title: "Cancel selection?", message: "Are you sure you want to abandon selection?", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: {(action: UIAlertAction!) in
+                print("One")
+            }))
+            alert.addAction(UIAlertAction(title: "Deselect", style: .default, handler: {(action: UIAlertAction!) in
+                print("Two")
+                _ = self.navigationController?.popViewController(animated: true)
+            }))
+            
+            present(alert, animated: true, completion: nil)
+        } else {
+            _ = navigationController?.popViewController(animated: true)
+        }
+    }
+    
+    func signOut(sender: UIBarButtonItem) {
+        let alert = UIAlertController(title: AppDelegate.dropboxEmail ?? "", message: "Are you sure you want to log out from Dropbox?", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: {(action: UIAlertAction!) in
+            print("One")
+        }))
+        alert.addAction(UIAlertAction(title: "Log out", style: .default, handler: {(action: UIAlertAction!) in
+            print("Two")
+        }))
+        
+        present(alert, animated: true, completion: nil)
+    }
     
     override func viewDidLoad() {
         view.backgroundColor = .white
+        
+        // Navigation bar
+        let leftBarButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelAction(sender:)))
+        if (filesTree?.name.isEmpty)! {
+            navigationItem.title = "Dropbox"
+            navigationItem.hidesBackButton = true
+            navigationItem.leftBarButtonItem = leftBarButton
+        } else {
+            navigationItem.title = filesTree?.name
+            
+            //navigationController?.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Title", style: .plain, target: nil, action: nil)
+            //navigationItem.backBarButtonItem?.title = "Back"
+        }
+        let signoutButton = UIBarButtonItem(title: "Sign out", style: .plain, target: self, action: #selector(self.signOut(sender:)))
+        navigationItem.rightBarButtonItem = signoutButton
+            
+        /*emailLabel.textAlignment = .center
+        emailLabel.textColor = .lightGray
+        emailLabel.text = AppDelegate.dropboxEmail ?? ""
+        view.addSubview(emailLabel)
+        ViewController.performAutolayoutConstants(subview: emailLabel, view: view, left: 0.0, right: 0.0, top: 0.0, bottom: -(view.frame.height - 100))*/
+        
+        // Search bar
+        searchBar.delegate = self
+        view.addSubview(searchBar)
+        ViewController.performAutolayoutConstants(subview: searchBar, view: view, left: 0.0, right: 0.0, top: 0.0, bottom: -(view.frame.height - 100))
+        
+        
+        
         
         appendUI()
     }
@@ -61,18 +152,17 @@ class FilesListViewController: UIViewController {
         view.addSubview(filesTableView)
         
         // Files table view autolayout
-        filesTableView.translatesAutoresizingMaskIntoConstraints = false
-        filesTableView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 0.0).isActive = true
-        filesTableView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 0.0).isActive = true
-        filesTableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0.0).isActive = true
-        filesTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0.0).isActive = true
+        ViewController.performAutolayoutConstants(subview: filesTableView, view: view, left: 0.0, right: 0.0, top: 35.0, bottom: 0.0)
         
         attachButton.backgroundColor = .white
+        attachButton.setTitle("Attach", for: .normal)
         attachButton.setTitleColor(.red, for: .normal)
-        attachButton.isHidden = true
+        attachButton.isHidden = false
         attachButton.addTarget(self, action: #selector(multipleSelection(sender:)), for: .touchUpInside)
+        
+        //attachButton.frame = CGRect(x: 0, y: 400, width: 320, height: 50)
         view.addSubview(attachButton)
-        ViewController.performAutolayoutConstants(subview: attachButton, view: view, left: 0.0, right: 0.0, top: view.frame.height - 50.0, bottom: 0.0)
+        ViewController.performAutolayoutConstants(subview: attachButton, view: view, left: 0.0, right: 0.0, top: view.frame.height - 100, bottom: 0.0)
     }
     
     func multipleSelection(sender: UIButton) {

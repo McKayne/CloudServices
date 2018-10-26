@@ -43,22 +43,27 @@ class FilesDelegateDataSource: NSObject, UITableViewDelegate, UITableViewDataSou
         
         checkboxList()
         
-        cell.accessoryView = selectionCheckbox[indexPath.row]
-        
         let fileOrDir = filesTree.childFiles[indexPath.row]
         
+        let nameLabel = UILabel()
+        let attributesLabel = UILabel()
         if !fileOrDir.isDirectory {
+            cell.accessoryView = selectionCheckbox[indexPath.row]
+            
             let file = filesTree.childFiles[indexPath.row].file
         
             if let preview = file?.preview {
                 cell.contentView.addSubview(preview)
+                preview.frame = CGRect(x: 15, y: 15, width: 100 - 30, height: 100 - 30)
+                
                 if let previewImage = fileOrDir.preview {
                     preview.image = previewImage
                 }
             }
+            
         
             // File name
-            let nameLabel = UILabel()
+            
             nameLabel.numberOfLines = 0
             cell.contentView.addSubview(nameLabel)
             ViewController.performAutolayoutConstants(subview: nameLabel, view: cell.contentView, left: 100.0, right: -50.0, top: 0.0, bottom: -50.0)
@@ -66,16 +71,37 @@ class FilesDelegateDataSource: NSObject, UITableViewDelegate, UITableViewDataSou
             nameLabel.text = fileOrDir.name
         
             // File attributes
-            let attributesLabel = UILabel()
             attributesLabel.numberOfLines = 0
             cell.contentView.addSubview(attributesLabel)
             ViewController.performAutolayoutConstants(subview: attributesLabel, view: cell.contentView, left: 100.0, right: -50.0, top: 50.0, bottom: 0.0)
         
-            attributesLabel.textColor = .gray
+            attributesLabel.textColor = .lightGray
             
             attributesLabel.text = FilesDelegateDataSource.attributesString(fileName: fileOrDir)
         } else {
-            cell.textLabel?.text = fileOrDir.name
+            cell.accessoryType = .disclosureIndicator
+            
+            let preview = UIImageView(frame: CGRect(x: 15, y: 15, width: 100 - 30, height: 100 - 30))
+            preview.image = UIImage(named: "folder.png")
+            cell.contentView.addSubview(preview)
+            
+            //cell.textLabel?.text = fileOrDir.name
+            // File name
+            nameLabel.numberOfLines = 0
+            cell.contentView.addSubview(nameLabel)
+            ViewController.performAutolayoutConstants(subview: nameLabel, view: cell.contentView, left: 100.0, right: -50.0, top: 0.0, bottom: -50.0)
+            
+            nameLabel.text = fileOrDir.name
+            
+            // File attributes
+            let attributesLabel = UILabel()
+            attributesLabel.numberOfLines = 0
+            cell.contentView.addSubview(attributesLabel)
+            ViewController.performAutolayoutConstants(subview: attributesLabel, view: cell.contentView, left: 100.0, right: -50.0, top: 50.0, bottom: 0.0)
+            
+            attributesLabel.textColor = .lightGray
+            
+            attributesLabel.text = "\(fileOrDir.childFiles.count) files"
         }
         
         return cell
@@ -95,7 +121,7 @@ class FilesDelegateDataSource: NSObject, UITableViewDelegate, UITableViewDataSou
             controller.navigationController?.pushViewController(nextController, animated: true)
         } else {
             mainController.selectedFiles = [fileOrDir]
-            mainController.pages = [FileViewController(backgroundColor: .blue, file: fileOrDir), FileViewController(backgroundColor: .green, file: fileOrDir)]
+            mainController.pages = [FileViewController(backgroundColor: .white, file: fileOrDir)]
             
             mainController.pageView.dataSource = nil // old page view's cache bug
             mainController.pageView.setViewControllers([mainController.pages[0]], direction: .forward, animated: true, completion: nil)

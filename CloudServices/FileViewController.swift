@@ -54,28 +54,29 @@ class FileViewController: UIViewController {
         
         // Selected file name
         fileName.textAlignment = .center
-        
+        fileName.numberOfLines = 0
         view.addSubview(fileName)
-        ViewController.performAutolayoutConstants(subview: fileName, view: view, left: 0.0, right: 0.0, top: view.frame.height / 2 - 150, bottom: -(view.frame.height / 2 + 150 - 30))
-        
-        // Selected file preview
-        
-        view.addSubview(preview)
-        ViewController.performAutolayoutConstants(subview: preview, view: view, left: 0.0, right: 0.0, top: view.frame.height / 2 - 100, bottom: -(view.frame.height / 2 + 100 - view.frame.width))
-        
-        // Selected file size/modified
-        fileAttributes.textAlignment = .center
-        fileAttributes.textColor = .gray
-        
-        view.addSubview(fileAttributes)
-        ViewController.performAutolayoutConstants(subview: fileAttributes, view: view, left: 0.0, right: 0.0, top: view.frame.height / 2 + 220, bottom: -(view.frame.height / 2 - 220 - 30))
+        ViewController.performAutolayoutConstants(subview: fileName, view: view, left: 0.0, right: 0.0, top: 0, bottom: -(view.frame.height / 2 + 2 * view.frame.height / 2 / 3))
         
         // Selected file URL
         fileURL.textAlignment = .center
-        fileURL.textColor = .gray
+        fileURL.numberOfLines = 0
+        fileURL.textColor = .lightGray
         
         view.addSubview(fileURL)
-        ViewController.performAutolayoutConstants(subview: fileURL, view: view, left: 0.0, right: 0.0, top: view.frame.height / 2 + 240, bottom: -(view.frame.height / 2 - 240 - 30))
+        ViewController.performAutolayoutConstants(subview: fileURL, view: view, left: 0.0, right: 0.0, top: view.frame.height / 2 - 2 * view.frame.height / 2 / 3, bottom: -(view.frame.height / 2 + view.frame.height / 2 / 3))
+        
+        // Selected file size/modified
+        fileAttributes.textAlignment = .center
+        fileAttributes.numberOfLines = 0
+        fileAttributes.textColor = .lightGray
+        
+        view.addSubview(fileAttributes)
+        ViewController.performAutolayoutConstants(subview: fileAttributes, view: view, left: 0.0, right: 0.0, top: view.frame.height / 2 - view.frame.height / 2 / 3, bottom: -view.frame.height / 2)
+        
+        // Selected file preview
+        view.addSubview(preview)
+        ViewController.performAutolayoutConstants(subview: preview, view: view, left: 15.0, right: -15.0, top: view.frame.height / 2 + 15, bottom: -15)
         
         appendUI()
     }
@@ -83,7 +84,7 @@ class FileViewController: UIViewController {
     func appendUI() {
         if file == nil {
             fileName.text = "No file selected"
-            preview.image = UIImage(named: "dummyFile.png")
+            preview.image = UIImage(named: "dummyFile.jpg")
             fileAttributes.text = ""
             fileURL.text = ""
         } else {
@@ -91,10 +92,13 @@ class FileViewController: UIViewController {
             if let previewImage = file?.preview {
                 preview.image = previewImage
             } else {
-                preview.image = UIImage(named: "dummyFile.png")
+                preview.image = UIImage(named: "dummyFile.jpg")
             }
             fileAttributes.text = FilesDelegateDataSource.attributesString(fileName: file!)
             fileURL.text = file?.urlString ?? ""
         }
+        fileName.sizeToFit()
+        fileURL.sizeToFit()
+        fileAttributes.sizeToFit()
     }
 }

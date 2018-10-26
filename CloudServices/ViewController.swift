@@ -9,15 +9,18 @@
 import UIKit
 import SwiftyDropbox
 
-extension UINavigationBar {
+/*extension UINavigationBar {
     
     open override func sizeThatFits(_ size: CGSize) -> CGSize {
         let screenRect = UIScreen.main.bounds
-        return CGSize(width: screenRect.size.width, height: 90.0)
+        return CGSize(width: screenRect.size.width, height: ViewController.navBarHeight)
     }
-}
+}*/
 
 class ViewController: UIViewController, UIPageViewControllerDelegate, UIPageViewControllerDataSource {
+    
+    static let accountLabel = UILabel()
+    static var navBarHeight: CGFloat = 90.0
     
     var pageView: UIPageViewController!
     var pages: [UIViewController] = []
@@ -95,8 +98,18 @@ class ViewController: UIViewController, UIPageViewControllerDelegate, UIPageView
                 //print(tags[i + 2])
                 dateString.append(tags[i + 2])
             } else if tags[i].hasPrefix("\"path_display\"") {
-                var chars = tags[i + 2].characters
+                var url = tags[i + 2]
+                var j = 1
+                while !tags[i + 2 + j].hasPrefix("\"") {
+                    url += " \(tags[i + 2 + j])"
+                    j += 1
+                }
+                
+                var chars = url.characters
                 chars.removeFirst()
+                while chars.last != "\"" {
+                    chars.removeLast()
+                }
                 chars.removeLast()
                 urlString.append(String(chars))
                 //print(String(chars))
@@ -122,7 +135,7 @@ class ViewController: UIViewController, UIPageViewControllerDelegate, UIPageView
             }
             child.file = DropboxFile(name: filesList.entries[i].name)
             child.urlString = urlString[i]
-            if urlString[i].hasSuffix("jpg") {
+            if urlString[i].hasSuffix("jpg") || urlString[i].hasSuffix("png") {
                 print(urlString[i])
                 
                 // Download to Data
@@ -179,8 +192,23 @@ class ViewController: UIViewController, UIPageViewControllerDelegate, UIPageView
         return filesTree
     }
     
+    func signOut(sender: UIBarButtonItem) {
+        let alert = UIAlertController(title: AppDelegate.dropboxEmail ?? "", message: "Are you sure you want to log out from Dropbox?", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: {(action: UIAlertAction!) in
+            print("One")
+        }))
+        alert.addAction(UIAlertAction(title: "Log out", style: .default, handler: {(action: UIAlertAction!) in
+            print("Two")
+        }))
+        
+        present(alert, animated: true, completion: nil)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Recursive files list
+        filesTree = dropboxFilesList(path: "")
         
         DropboxClientsManager.authorizeFromController(UIApplication.shared,
                                                       controller: self,
@@ -190,15 +218,7 @@ class ViewController: UIViewController, UIPageViewControllerDelegate, UIPageView
         
         view.backgroundColor = .white
         
-        pages.append(FileViewController(backgroundColor: .red))
-        
-        /*let fileControllerA = FileViewController(backgroundColor: .red)
-        let fileControllerB = FileViewController(backgroundColor: .green)
-        let fileControllerC = FileViewController(backgroundColor: .blue)
-        
-        pages.append(fileControllerA)
-        pages.append(fileControllerB)
-        pages.append(fileControllerC)*/
+        pages.append(FileViewController(backgroundColor: .white))
         
         pageView = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
         pageView.delegate = self
@@ -208,22 +228,17 @@ class ViewController: UIViewController, UIPageViewControllerDelegate, UIPageView
         pageView.view.frame = CGRect(x: 0, y: 0, width: 320, height: 568)
         view.addSubview(pageView.view)
         
-        /*pageControl.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height)
-        pageControl.currentPageIndicatorTintColor = .black
-        pageControl.pageIndicatorTintColor = .lightGray
-        pageControl.numberOfPages = 3
-        pageControl.currentPage = 0
-        view.addSubview(pageControl)
-        view.bringSubview(toFront: pageControl)*/
-        
-        
         // Navigation bar
         navigationItem.title = defaultTitle
         let selectButton = UIBarButtonItem(title: "Select", style: .plain, target: self, action: #selector(self.selectFiles(sender:)))
-        navigationItem.rightBarButtonItem = selectButton
+        navigationItem.leftBarButtonItem = selectButton
+        let signoutButton = UIBarButtonItem(title: "Sign out", style: .plain, target: self, action: #selector(self.signOut(sender:)))
+        navigationItem.leftBarButtonItem = selectButton
+        navigationItem.rightBarButtonItem = signoutButton
         
-        // Recursive files list
-        filesTree = dropboxFilesList(path: "")
+        //customNavigationBar()
+        
+
     }
 
     override func didReceiveMemoryWarning() {
@@ -231,7 +246,30 @@ class ViewController: UIViewController, UIPageViewControllerDelegate, UIPageView
         // Dispose of any resources that can be recreated.
     }
     
+    func customNavigationBar() {
+        ViewController.navBarHeight = 90.0
+        navigationController?.navigationBar.sizeToFit()
+        
+        let titleView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: ViewController.navBarHeight))
+        
+        ViewController.accountLabel.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 30)
+        ViewController.accountLabel.textAlignment = .center
+        titleView.addSubview(ViewController.accountLabel)
+        
+        let dropboxLabel = UILabel(frame: CGRect(x: 0, y: 30, width: view.frame.width, height: 30))
+        dropboxLabel.textAlignment = .center
+        dropboxLabel.text = "Dropbox"
+        titleView.addSubview(dropboxLabel)
+        
+        navigationController!.navigationBar.topItem!.titleView = titleView
+    }
+    
+    //override func viewDidAppear(_ animated: Bool) {
+    //    <#code#>
+    //}
+    
     func selectFiles(sender: UIBarButtonItem) {
+        //customNavigationBar()
         let filesListController = FilesListViewController(mainController: self, filesTree: filesTree)
         navigationController?.pushViewController(filesListController, animated: true)
     }

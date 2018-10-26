@@ -14,7 +14,7 @@ class DropboxFile: NSObject {
     
     init(name: String) {
         preview = UIImageView(frame: CGRect(x: 0, y: 0, width: 100, height: 100));
-        preview?.image = UIImage(named: "dummyFile.png")
+        preview?.image = UIImage(named: "dummyFile.jpg")
         
         self.name = name
         self.attributes = "476 KB"
