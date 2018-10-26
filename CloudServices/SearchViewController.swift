@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftyDropbox
 
 class SearchViewController: UIViewController {
     
@@ -52,6 +53,7 @@ class SearchViewController: UIViewController {
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: {(action: UIAlertAction!) in
         }))
         alert.addAction(UIAlertAction(title: "Log out", style: .default, handler: {(action: UIAlertAction!) in
+            DropboxClientsManager.unlinkClients()
         }))
         
         present(alert, animated: true, completion: nil)
