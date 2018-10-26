@@ -12,6 +12,8 @@ import SwiftyDropbox
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
+    static var mainController: ViewController?
+    
     var window: UIWindow?
     static var dropboxEmail: String? // email залогиненного в приложении пользователя
     
@@ -36,6 +38,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                             print(account.email)
                         }
                     }
+                }
+                
+                let loading = LoadingIndicatorController()
+                AppDelegate.mainController?.navigationController?.pushViewController(loading, animated: true)
+                
+                OperationQueue().addOperation {
+                    // Построение дерева файлов
+                    AppDelegate.mainController?.filesTree = (AppDelegate.mainController?.dropboxFilesList(path: ""))!
+                    
+                    sleep(5)
+                    
+                    DispatchQueue.main.async {
+                        _ = AppDelegate.mainController?.navigationController?.popToViewController(AppDelegate.mainController!, animated: true)
+                    }
+                    
                 }
             case .cancel:
                 print("Authorization flow was manually canceled by user!")

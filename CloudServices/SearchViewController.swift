@@ -54,6 +54,13 @@ class SearchViewController: UIViewController {
         }))
         alert.addAction(UIAlertAction(title: "Log out", style: .default, handler: {(action: UIAlertAction!) in
             DropboxClientsManager.unlinkClients()
+            
+            // Аутентификация пользователя
+            DropboxClientsManager.authorizeFromController(UIApplication.shared,
+                                                          controller: self,
+                                                          openURL: { (url: URL) -> Void in
+                                                            UIApplication.shared.openURL(url)
+            })
         }))
         
         present(alert, animated: true, completion: nil)

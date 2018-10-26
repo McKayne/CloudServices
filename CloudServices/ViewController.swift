@@ -160,6 +160,13 @@ class ViewController: UIViewController, UIPageViewControllerDelegate, UIPageView
         }))
         alert.addAction(UIAlertAction(title: "Log out", style: .default, handler: {(action: UIAlertAction!) in
             DropboxClientsManager.unlinkClients()
+            
+            // Аутентификация пользователя
+            DropboxClientsManager.authorizeFromController(UIApplication.shared,
+                                                          controller: self,
+                                                          openURL: { (url: URL) -> Void in
+                                                            UIApplication.shared.openURL(url)
+            })
         }))
         
         present(alert, animated: true, completion: nil)
@@ -168,15 +175,14 @@ class ViewController: UIViewController, UIPageViewControllerDelegate, UIPageView
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        AppDelegate.mainController = self
+        
         // Аутентификация пользователя
         DropboxClientsManager.authorizeFromController(UIApplication.shared,
                                                       controller: self,
                                                       openURL: { (url: URL) -> Void in
                                                         UIApplication.shared.openURL(url)
         })
-        
-        // Построение дерева файлов
-        filesTree = dropboxFilesList(path: "")
         
         view.backgroundColor = .white
         
