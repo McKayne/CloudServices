@@ -2,7 +2,7 @@
 //  LoadingIndicatorController.swift
 //  CloudServices
 //
-//  Created by для интернета on 26.10.18.
+//  Created by Nikolay Taran on 26.10.18.
 //  Copyright © 2018 Nikolay Taran. All rights reserved.
 //
 
@@ -35,10 +35,5 @@ class LoadingIndicatorController: UIViewController {
         
         indicator.isHidden = false
         indicator.startAnimating()
-        
-        /*let button = UIButton(frame: CGRect(x: 200, y: 400, width: 100, height: 100))
-        button.setTitle("DDDD", for: .normal)
-        button.backgroundColor = .red
-        view.addSubview(button)*/
     }
 }
