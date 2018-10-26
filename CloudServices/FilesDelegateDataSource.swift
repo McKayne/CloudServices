@@ -2,7 +2,7 @@
 //  FilesDelegateDataSource.swift
 //  CloudServices
 //
-//  Created by для интернета on 24.10.18.
+//  Created by Nikolay Taran on 24.10.18.
 //  Copyright © 2018 Nikolay Taran. All rights reserved.
 //
 
@@ -29,6 +29,11 @@ class FilesDelegateDataSource: NSObject, UITableViewDelegate, UITableViewDataSou
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if filesTree.childFiles.count > 0 {
+            tableView.isHidden = false
+        } else {
+            tableView.isHidden = true
+        }
         return filesTree.childFiles.count
     }
     
@@ -85,7 +90,6 @@ class FilesDelegateDataSource: NSObject, UITableViewDelegate, UITableViewDataSou
             preview.image = UIImage(named: "folder.png")
             cell.contentView.addSubview(preview)
             
-            //cell.textLabel?.text = fileOrDir.name
             // File name
             nameLabel.numberOfLines = 0
             cell.contentView.addSubview(nameLabel)
@@ -115,8 +119,6 @@ class FilesDelegateDataSource: NSObject, UITableViewDelegate, UITableViewDataSou
         let fileOrDir = filesTree.childFiles[indexPath.row]
         
         if fileOrDir.isDirectory {
-            print("Directory select")
-            
             let nextController = FilesListViewController(mainController: mainController, filesTree: fileOrDir)
             controller.navigationController?.pushViewController(nextController, animated: true)
         } else {
@@ -126,9 +128,6 @@ class FilesDelegateDataSource: NSObject, UITableViewDelegate, UITableViewDataSou
             mainController.pageView.dataSource = nil // old page view's cache bug
             mainController.pageView.setViewControllers([mainController.pages[0]], direction: .forward, animated: true, completion: nil)
             mainController.pageView.dataSource = mainController
-            
-            /*mainController.
-            */
             
             _ = controller.navigationController?.popToViewController(mainController, animated: true)
         }
@@ -155,9 +154,7 @@ class FilesDelegateDataSource: NSObject, UITableViewDelegate, UITableViewDataSou
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "\"yyyy-MM-dd"
         let date = dateFormatter.date(from: dateSubstring!)
-        if date == nil {
-            print("NIL DATE")
-        }
+        
         let calendar = Calendar.current
         let day = calendar.component(.day, from: date!)
         let month = calendar.component(.month, from: date!)

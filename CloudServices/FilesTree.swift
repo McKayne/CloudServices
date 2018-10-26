@@ -2,7 +2,7 @@
 //  FilesTree.swift
 //  CloudServices
 //
-//  Created by для интернета on 24.10.18.
+//  Created by Nikolay Taran on 24.10.18.
 //  Copyright © 2018 Nikolay Taran. All rights reserved.
 //
 

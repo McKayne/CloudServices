@@ -2,7 +2,7 @@
 //  DropboxFile.swift
 //  CloudServices
 //
-//  Created by для интернета on 24.10.18.
+//  Created by Nikolay Taran on 24.10.18.
 //  Copyright © 2018 Nikolay Taran. All rights reserved.
 //
 
@@ -17,6 +17,6 @@ class DropboxFile: NSObject {
         preview?.image = UIImage(named: "dummyFile.jpg")
         
         self.name = name
-        self.attributes = "476 KB"
+        self.attributes = ""
     }
 }

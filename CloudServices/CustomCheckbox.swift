@@ -2,7 +2,7 @@
 //  CustomCheckbox.swift
 //  CloudServices
 //
-//  Created by для интернета on 25.10.18.
+//  Created by Nikolay Taran on 25.10.18.
 //  Copyright © 2018 Nikolay Taran. All rights reserved.
 //
 
@@ -72,8 +72,7 @@ class CustomCheckbox: UIView {
                 }
             }
         }
-        print(selectedCount)
-        
+
         if selectedCount > 0 {
             if let filesList = filesListDataSource {
                 filesList.filesListController.attachButton.setTitle("Attach \(selectedCount)", for: .normal)
@@ -92,7 +91,6 @@ class CustomCheckbox: UIView {
     }
     
     func checkboxAction(recognizer: UITapGestureRecognizer) {
-        print("TAPPED")
         isChecked = !isChecked
         setNeedsDisplay()
     }

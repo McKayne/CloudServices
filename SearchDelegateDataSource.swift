@@ -2,7 +2,7 @@
 //  SearchDelegateDataSource.swift
 //  CloudServices
 //
-//  Created by для интернета on 26.10.18.
+//  Created by Nikolay Taran on 26.10.18.
 //  Copyright © 2018 Nikolay Taran. All rights reserved.
 //
 
@@ -26,6 +26,11 @@ class SearchDelegateDataSource: NSObject, UITableViewDelegate, UITableViewDataSo
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if searchController.files.count > 0 {
+            tableView.isHidden = false
+        } else {
+            tableView.isHidden = true
+        }
         return searchController.files.count
     }
     
@@ -89,9 +94,6 @@ class SearchDelegateDataSource: NSObject, UITableViewDelegate, UITableViewDataSo
         mainController.pageView.dataSource = nil // old page view's cache bug
         mainController.pageView.setViewControllers([mainController.pages[0]], direction: .forward, animated: true, completion: nil)
         mainController.pageView.dataSource = mainController
-        
-        /*mainController.
-         */
         
         _ = searchController.navigationController?.popToViewController(mainController, animated: true)
     }

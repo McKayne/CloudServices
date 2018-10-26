@@ -2,7 +2,7 @@
 //  AppDelegate.swift
 //  CloudServices
 //
-//  Created by для интернета on 24.10.18.
+//  Created by Nikolay Taran on 24.10.18.
 //  Copyright © 2018 Nikolay Taran. All rights reserved.
 //
 
@@ -14,6 +14,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     static var dropboxEmail: String?
+    
+    // Экран залочен в портретной ориентации
+    func application(_ applicaton: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+        return UIInterfaceOrientationMask.portrait
+    }
 
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
         if let authResult = DropboxClientsManager.handleRedirectURL(url) {

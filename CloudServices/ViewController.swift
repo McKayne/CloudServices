@@ -2,20 +2,12 @@
 //  ViewController.swift
 //  CloudServices
 //
-//  Created by для интернета on 24.10.18.
+//  Created by Nikolay Taran on 24.10.18.
 //  Copyright © 2018 Nikolay Taran. All rights reserved.
 //
 
 import UIKit
 import SwiftyDropbox
-
-/*extension UINavigationBar {
-    
-    open override func sizeThatFits(_ size: CGSize) -> CGSize {
-        let screenRect = UIScreen.main.bounds
-        return CGSize(width: screenRect.size.width, height: ViewController.navBarHeight)
-    }
-}*/
 
 class ViewController: UIViewController, UIPageViewControllerDelegate, UIPageViewControllerDataSource {
     
@@ -36,18 +28,12 @@ class ViewController: UIViewController, UIPageViewControllerDelegate, UIPageView
     var selectedFiles: [FilesTree] = []
     
     func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
-        print("Fgfgf")
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-        if !completed {
-            print("DID NOT CHANGE")
-        }
-        print("CHANGED")
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-        print("GHGHGH")
         let currentIndex = pages.index(of: viewController)!
         if currentIndex == 0 {
             return nil
@@ -57,7 +43,6 @@ class ViewController: UIViewController, UIPageViewControllerDelegate, UIPageView
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-        print("GHGHGH")
         let currentIndex = pages.index(of: viewController)!
         if currentIndex == pages.count - 1 {
             return nil
@@ -76,7 +61,6 @@ class ViewController: UIViewController, UIPageViewControllerDelegate, UIPageView
     }
     
     func customDeserialization(client: DropboxClient, filesList: Files.ListFolderResultSerializer.ValueType, filesTree: FilesTree, path: String) -> FilesTree {
-        //print(filesList)
         
         let tags = filesList.description.components(separatedBy: [" ", ";"])
         var isDirectory: [Bool] = []
@@ -86,16 +70,11 @@ class ViewController: UIViewController, UIPageViewControllerDelegate, UIPageView
         for i in 0..<tags.count {
             if tags[i].hasPrefix("folder") {
                 isDirectory.append(true)
-                //print("FOLDER")
             } else if tags[i].hasPrefix("file") {
                 isDirectory.append(false)
-                //print("FILE")
             } else if tags[i].hasPrefix("size") {
-                //print("SIZE")
-                //print(tags[i + 2])
                 size.append(Int(tags[i + 2]))
             } else if tags[i].hasPrefix("\"server_modified\"") {
-                //print(tags[i + 2])
                 dateString.append(tags[i + 2])
             } else if tags[i].hasPrefix("\"path_display\"") {
                 var url = tags[i + 2]
@@ -112,13 +91,11 @@ class ViewController: UIViewController, UIPageViewControllerDelegate, UIPageView
                 }
                 chars.removeLast()
                 urlString.append(String(chars))
-                //print(String(chars))
             }
         }
         
         var fileSizeIndex = 0
         for i in 0..<filesList.entries.count {
-            //print("Name = \(nth.name)")
             
             var child = FilesTree(isDirectory: isDirectory[i], name: filesList.entries[i].name)
             if !isDirectory[i] {
@@ -128,7 +105,6 @@ class ViewController: UIViewController, UIPageViewControllerDelegate, UIPageView
                 child.dateString = dateString[fileSizeIndex]
                 fileSizeIndex += 1
             } else {
-                //print("Recursive \(path + "/" + filesList.entries[i].name)")
                 
                 child = dropboxFilesList(path: path + "/" + filesList.entries[i].name)
                 child.name = filesList.entries[i].name
@@ -136,26 +112,19 @@ class ViewController: UIViewController, UIPageViewControllerDelegate, UIPageView
             child.file = DropboxFile(name: filesList.entries[i].name)
             child.urlString = urlString[i]
             if urlString[i].hasSuffix("jpg") || urlString[i].hasSuffix("png") {
-                print(urlString[i])
-                
+
                 // Download to Data
                 client.files.download(path: urlString[i])
                     .response { response, error in
                         if let response = response {
-                            let responseMetadata = response.0
-                            //print(responseMetadata)
+                            _ = response.0
                             let fileContents = response.1
-                            //print(fileContents)
                             child.preview = UIImage(data: fileContents)
-                            if child.preview == nil {
-                                print("Nil image")
-                            }
                         } else if let error = error {
                             print(error)
                         }
                     }
                     .progress { progressData in
-                        //print(progressData)
                 }
             }
             
@@ -173,32 +142,18 @@ class ViewController: UIViewController, UIPageViewControllerDelegate, UIPageView
         
         client?.files.listFolder(path: path).response(queue: DispatchQueue(label: "MyCustomSerialQueue")) { response, error in
             if let result = response {
-                //print(Thread.current)  // Output: <NSThread: 0x61000007bec0>{number = 4, name = (null)}
-                //print(Thread.main)     // Output: <NSThread: 0x608000070100>{number = 1, name = (null)}
-                
-                //re
-                
                 filesTree = self.customDeserialization(client: client!, filesList: result, filesTree: filesTree, path: path)
-                
-                //print(filesList)
-                
-                //print(result.entries.count)
-                //filesList = result
-                
             }
         }
-        
-        //print(filesList)
+
         return filesTree
     }
     
     func signOut(sender: UIBarButtonItem) {
         let alert = UIAlertController(title: AppDelegate.dropboxEmail ?? "", message: "Are you sure you want to log out from Dropbox?", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: {(action: UIAlertAction!) in
-            print("One")
         }))
         alert.addAction(UIAlertAction(title: "Log out", style: .default, handler: {(action: UIAlertAction!) in
-            print("Two")
         }))
         
         present(alert, animated: true, completion: nil)
@@ -207,14 +162,14 @@ class ViewController: UIViewController, UIPageViewControllerDelegate, UIPageView
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Recursive files list
-        filesTree = dropboxFilesList(path: "")
-        
-        DropboxClientsManager.authorizeFromController(UIApplication.shared,
+        /*DropboxClientsManager.authorizeFromController(UIApplication.shared,
                                                       controller: self,
                                                       openURL: { (url: URL) -> Void in
                                                         UIApplication.shared.openURL(url)
-        })
+        })*/
+        
+        // Recursive files list
+        filesTree = dropboxFilesList(path: "")
         
         view.backgroundColor = .white
         
@@ -225,7 +180,7 @@ class ViewController: UIViewController, UIPageViewControllerDelegate, UIPageView
         pageView.dataSource = self
         pageView.setViewControllers([pages[0]], direction: .forward, animated: true, completion: nil)
         
-        pageView.view.frame = CGRect(x: 0, y: 0, width: 320, height: 568)
+        pageView.view.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height)
         view.addSubview(pageView.view)
         
         // Navigation bar
@@ -235,10 +190,6 @@ class ViewController: UIViewController, UIPageViewControllerDelegate, UIPageView
         let signoutButton = UIBarButtonItem(title: "Sign out", style: .plain, target: self, action: #selector(self.signOut(sender:)))
         navigationItem.leftBarButtonItem = selectButton
         navigationItem.rightBarButtonItem = signoutButton
-        
-        //customNavigationBar()
-        
-
     }
 
     override func didReceiveMemoryWarning() {
@@ -246,30 +197,12 @@ class ViewController: UIViewController, UIPageViewControllerDelegate, UIPageView
         // Dispose of any resources that can be recreated.
     }
     
-    func customNavigationBar() {
-        ViewController.navBarHeight = 90.0
-        navigationController?.navigationBar.sizeToFit()
-        
-        let titleView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: ViewController.navBarHeight))
-        
-        ViewController.accountLabel.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 30)
-        ViewController.accountLabel.textAlignment = .center
-        titleView.addSubview(ViewController.accountLabel)
-        
-        let dropboxLabel = UILabel(frame: CGRect(x: 0, y: 30, width: view.frame.width, height: 30))
-        dropboxLabel.textAlignment = .center
-        dropboxLabel.text = "Dropbox"
-        titleView.addSubview(dropboxLabel)
-        
-        navigationController!.navigationBar.topItem!.titleView = titleView
+    func selectFiles(sender: UIBarButtonItem) {
+        let filesListController = FilesListViewController(mainController: self, filesTree: filesTree)
+        navigationController?.pushViewController(filesListController, animated: true)
     }
     
-    //override func viewDidAppear(_ animated: Bool) {
-    //    <#code#>
-    //}
-    
-    func selectFiles(sender: UIBarButtonItem) {
-        //customNavigationBar()
+    func selectFiles() {
         let filesListController = FilesListViewController(mainController: self, filesTree: filesTree)
         navigationController?.pushViewController(filesListController, animated: true)
     }
