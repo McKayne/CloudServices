@@ -8,6 +8,7 @@
 
 import UIKit
 
+// Чекбокс, показывающий выбран ли файл в списке
 class CustomCheckbox: UIView {
     
     var isChecked: Bool = false
@@ -50,6 +51,9 @@ class CustomCheckbox: UIView {
         super.init(coder: aDecoder)
     }
     
+    // К изменению состояния чекбоксов привязан статус кнопки attachButton в контроллерах списков файлов
+    // По логике приложения кнопка множественного прикрепления attachButton появляется на экране только в случае если выбран хотя бы один файл
+    // При снятии выделения со всех файлов в текущем списке кнопка attachButton исчезает
     override func draw(_ rect: CGRect) {
         if isChecked {
             imageView.image = UIImage(named: "checked.png")
@@ -90,6 +94,7 @@ class CustomCheckbox: UIView {
         }
     }
     
+    // Tap gesture для изменения состояния чекбокса
     func checkboxAction(recognizer: UITapGestureRecognizer) {
         isChecked = !isChecked
         setNeedsDisplay()

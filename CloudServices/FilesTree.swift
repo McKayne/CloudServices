@@ -8,6 +8,7 @@
 
 import UIKit
 
+// Файлы и папки в приложении хранятся в виде дерева.
 class FilesTree: NSObject {
     
     let isDirectory: Bool

@@ -12,26 +12,27 @@ class FilesListViewController: UIViewController, UISearchBarDelegate {
     
     var refreshControl = UIRefreshControl()
     
-    // Main screen
+    // Контроллер входного экрана
     var mainController: ViewController?
     
-    // Email label
+    // Email пользователя
     let emailLabel = UILabel()
     
     // Search bar
     let searchBar = UISearchBar()
     
-    // Files list
+    // Список файлов
     var filesTree: FilesTree?
     
-    // Files table view
+    // И Table View для него
     let filesTableView = UITableView()
     var filesDelegateDataSource: FilesDelegateDataSource?
     
-    // Multiple attach button
+    // Кнопка множественного прикрепления
     let attachButton = UIButton()
     
-    // Selected file size/modified
+    // Строка, означающая что текущая папка пуста
+    // Появляется только если она дйствительно пуста
     let emptyFolder = UILabel()
     
     convenience init(mainController: ViewController, filesTree: FilesTree) {
@@ -53,6 +54,7 @@ class FilesListViewController: UIViewController, UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
     }
     
+    // Обход дерева файлов для поиска по названию
     func searchForText(text: String, files: FilesTree, found: inout [FilesTree]) -> [FilesTree] {
         for nth in files.childFiles {
             if nth.isDirectory {
@@ -65,6 +67,7 @@ class FilesListViewController: UIViewController, UISearchBarDelegate {
         return found
     }
     
+    // Пользователь нажал кнопку поиска файлов по названию, начинаем поиск и выводим все найденные файлы в отдельном списке
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.endEditing(true)
         
@@ -76,6 +79,7 @@ class FilesListViewController: UIViewController, UISearchBarDelegate {
         searchBar.text = ""
     }
     
+    // Пользователь нажал кнопку возврата при неснятом выделении, спрашивем действительно ли он хочет продолжить
     func cancelAction(sender: UIBarButtonItem) {
         if !attachButton.isHidden {
             let alert = UIAlertController(title: "Cancel selection?", message: "Are you sure you want to abandon selection?", preferredStyle: .alert)
@@ -91,6 +95,7 @@ class FilesListViewController: UIViewController, UISearchBarDelegate {
         }
     }
     
+    // Пользователь нажал кнопку выхода из аккаунта Dropbox, спрашивем действительно ли он хочет продолжить
     func signOut(sender: UIBarButtonItem) {
         let alert = UIAlertController(title: AppDelegate.dropboxEmail ?? "", message: "Are you sure you want to log out from Dropbox?", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: {(action: UIAlertAction!) in
@@ -122,7 +127,8 @@ class FilesListViewController: UIViewController, UISearchBarDelegate {
         ViewController.performAutolayoutConstants(subview: searchBar, view: view, left: 0.0, right: 0.0, top: 0.0, bottom: -(view.frame.height - 100))
         
         
-        // Selected file size/modified
+        // Строка, означающая что текущая папка пуста
+        // Появляется только если она дйствительно пуста
         emptyFolder.textAlignment = .center
         emptyFolder.text = "Folder is empty"
         emptyFolder.numberOfLines = 0
@@ -134,6 +140,7 @@ class FilesListViewController: UIViewController, UISearchBarDelegate {
         appendUI()
     }
     
+    // Селектор обновления дерева файлов в приложении
     func refreshAction(sender: UIRefreshControl) {
         mainController?.filesTree = (mainController?.dropboxFilesList(path: ""))!
         
@@ -143,6 +150,7 @@ class FilesListViewController: UIViewController, UISearchBarDelegate {
         })
     }
     
+    // Метод размещает список файлов и кнопку множественного прикрепления на экране
     func appendUI() {
     
         filesTableView.refreshControl = refreshControl
@@ -154,7 +162,7 @@ class FilesListViewController: UIViewController, UISearchBarDelegate {
         filesTableView.dataSource = filesDelegateDataSource
         view.addSubview(filesTableView)
         
-        // Files table view autolayout
+        // Применяем autolayout для списка файлов
         ViewController.performAutolayoutConstants(subview: filesTableView, view: view, left: 0.0, right: 0.0, top: 35.0, bottom: 0.0)
         
         attachButton.backgroundColor = .white
@@ -167,6 +175,7 @@ class FilesListViewController: UIViewController, UISearchBarDelegate {
         ViewController.performAutolayoutConstants(subview: attachButton, view: view, left: 0.0, right: 0.0, top: view.frame.height - 100, bottom: 0.0)
     }
     
+    // Селектор для прикрепления множества файлов, возвращает пользователя на входной экран
     func multipleSelection(sender: UIButton) {
         var selected: [FilesTree] = []
         for i in 0..<filesTree!.childFiles.count {

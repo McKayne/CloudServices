@@ -8,6 +8,7 @@
 
 import UIKit
 
+// Класс для превью файла
 class DropboxFile: NSObject {
     
     var preview: UIImageView?, name: String, attributes: String

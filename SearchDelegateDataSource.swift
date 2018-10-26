@@ -13,7 +13,7 @@ class SearchDelegateDataSource: NSObject, UITableViewDelegate, UITableViewDataSo
     let mainController: ViewController
     let searchController: SearchViewController
     
-    // Selection checkbox list
+    // Массив чекбоксов для файлов из списка
     var selectionCheckbox: [CustomCheckbox] = []
     
     init(searchController: SearchViewController, mainController: ViewController) {
@@ -61,15 +61,14 @@ class SearchDelegateDataSource: NSObject, UITableViewDelegate, UITableViewDataSo
         }
             
             
-        // File name
-            
+        // Имя файла
         nameLabel.numberOfLines = 0
         cell.contentView.addSubview(nameLabel)
         ViewController.performAutolayoutConstants(subview: nameLabel, view: cell.contentView, left: 100.0, right: -50.0, top: 0.0, bottom: -50.0)
             
         nameLabel.text = file.name
             
-        // File attributes
+        // Строка аттрибутов
         attributesLabel.numberOfLines = 0
         cell.contentView.addSubview(attributesLabel)
         ViewController.performAutolayoutConstants(subview: attributesLabel, view: cell.contentView, left: 100.0, right: -50.0, top: 50.0, bottom: 0.0)
@@ -85,13 +84,14 @@ class SearchDelegateDataSource: NSObject, UITableViewDelegate, UITableViewDataSo
         return 100.0
     }
     
+    // Файл выбран, возвращаем пользователя на входной экран
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let file = searchController.files[indexPath.row]
         
         mainController.selectedFiles = [file]
         mainController.pages = [FileViewController(backgroundColor: .white, file: file)]
         
-        mainController.pageView.dataSource = nil // old page view's cache bug
+        mainController.pageView.dataSource = nil // старый баг с кэшированием в scroll Page View
         mainController.pageView.setViewControllers([mainController.pages[0]], direction: .forward, animated: true, completion: nil)
         mainController.pageView.dataSource = mainController
         

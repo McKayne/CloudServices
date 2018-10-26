@@ -14,7 +14,7 @@ class FilesDelegateDataSource: NSObject, UITableViewDelegate, UITableViewDataSou
     var filesTree: FilesTree
     var controller: UIViewController, mainController: ViewController, filesListController: FilesListViewController
     
-    // Selection checkbox list
+    // Массив чекбоксов для файлов из списка
     var selectionCheckbox: [CustomCheckbox] = []
     
     init(filesTree: FilesTree, controller: UIViewController, mainController: ViewController, filesListController: FilesListViewController) {
@@ -67,15 +67,14 @@ class FilesDelegateDataSource: NSObject, UITableViewDelegate, UITableViewDataSou
             }
             
         
-            // File name
-            
+            // Имя файла
             nameLabel.numberOfLines = 0
             cell.contentView.addSubview(nameLabel)
             ViewController.performAutolayoutConstants(subview: nameLabel, view: cell.contentView, left: 100.0, right: -50.0, top: 0.0, bottom: -50.0)
             
             nameLabel.text = fileOrDir.name
         
-            // File attributes
+            // Строка аттрибутов
             attributesLabel.numberOfLines = 0
             cell.contentView.addSubview(attributesLabel)
             ViewController.performAutolayoutConstants(subview: attributesLabel, view: cell.contentView, left: 100.0, right: -50.0, top: 50.0, bottom: 0.0)
@@ -90,14 +89,14 @@ class FilesDelegateDataSource: NSObject, UITableViewDelegate, UITableViewDataSou
             preview.image = UIImage(named: "folder.png")
             cell.contentView.addSubview(preview)
             
-            // File name
+            // Имя файла
             nameLabel.numberOfLines = 0
             cell.contentView.addSubview(nameLabel)
             ViewController.performAutolayoutConstants(subview: nameLabel, view: cell.contentView, left: 100.0, right: -50.0, top: 0.0, bottom: -50.0)
             
             nameLabel.text = fileOrDir.name
             
-            // File attributes
+            // Строка аттрибутов
             let attributesLabel = UILabel()
             attributesLabel.numberOfLines = 0
             cell.contentView.addSubview(attributesLabel)
@@ -115,6 +114,7 @@ class FilesDelegateDataSource: NSObject, UITableViewDelegate, UITableViewDataSou
         return 100.0
     }
     
+    // Файл выбран, возвращаем пользователя на входной экран
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let fileOrDir = filesTree.childFiles[indexPath.row]
         
@@ -133,6 +133,7 @@ class FilesDelegateDataSource: NSObject, UITableViewDelegate, UITableViewDataSou
         }
     }
     
+    // Возвращает форматированную строку аттрибутов файла
     static func attributesString(fileName: FilesTree) -> String {
         var size: Int = fileName.size!
         var units = ""

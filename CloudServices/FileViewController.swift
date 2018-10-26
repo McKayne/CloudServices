@@ -14,16 +14,16 @@ class FileViewController: UIViewController {
     
     var backgroundColor: UIColor
     
-    // Selected file name
+    // Имя выбранного файла
     let fileName = UILabel()
     
-    // File preview
+    // Превью
     let preview = UIImageView()
     
-    // Selected file size/modified
+    // Строка аттрибутов
     let fileAttributes = UILabel()
     
-    // Selected file URL
+    // URL файла в Dropbox
     let fileURL = UILabel()
     
     convenience init(backgroundColor: UIColor) {
@@ -52,13 +52,13 @@ class FileViewController: UIViewController {
     override func viewDidLoad() {
         view.backgroundColor = backgroundColor
         
-        // Selected file name
+        // Имя выбранного файла
         fileName.textAlignment = .center
         fileName.numberOfLines = 0
         view.addSubview(fileName)
         ViewController.performAutolayoutConstants(subview: fileName, view: view, left: 0.0, right: 0.0, top: 0, bottom: -(view.frame.height / 2 + 2 * view.frame.height / 2 / 3))
         
-        // Selected file URL
+        // URL файла в Dropbox
         fileURL.textAlignment = .center
         fileURL.numberOfLines = 0
         fileURL.textColor = .lightGray
@@ -66,7 +66,7 @@ class FileViewController: UIViewController {
         view.addSubview(fileURL)
         ViewController.performAutolayoutConstants(subview: fileURL, view: view, left: 0.0, right: 0.0, top: view.frame.height / 2 - 2 * view.frame.height / 2 / 3, bottom: -(view.frame.height / 2 + view.frame.height / 2 / 3))
         
-        // Selected file size/modified
+        // Строка аттрибутов
         fileAttributes.textAlignment = .center
         fileAttributes.numberOfLines = 0
         fileAttributes.textColor = .lightGray
@@ -74,13 +74,14 @@ class FileViewController: UIViewController {
         view.addSubview(fileAttributes)
         ViewController.performAutolayoutConstants(subview: fileAttributes, view: view, left: 0.0, right: 0.0, top: view.frame.height / 2 - view.frame.height / 2 / 3, bottom: -view.frame.height / 2)
         
-        // Selected file preview
+        // Превью
         view.addSubview(preview)
         ViewController.performAutolayoutConstants(subview: preview, view: view, left: 15.0, right: -15.0, top: view.frame.height / 2 + 15, bottom: -15)
         
         appendUI()
     }
     
+    // Вызывается при обновлении информации о текущем файле
     func appendUI() {
         if file == nil {
             fileName.text = "No file selected"

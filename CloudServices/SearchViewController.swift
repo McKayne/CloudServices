@@ -10,23 +10,23 @@ import UIKit
 
 class SearchViewController: UIViewController {
     
-    // Main screen
+    // Входной экран
     var mainController: ViewController?
     
-    // Text to search
+    // Текст для поиска
     var searchText: String
     
-    // Searched files
+    // Найденные файлы
     var files: [FilesTree] = []
     
-    // Search results list
+    // И список для них
     let resultsTableView = UITableView()
     var searchDataSource: SearchDelegateDataSource?
     
-    // Multiple attach button
+    // Кнопка множественного прикрепления
     let attachButton = UIButton()
     
-    // Selected file size/modified
+    // Строка, означающая что нет файлов, соответствующих искомому тексту
     let emptyFolder = UILabel()
     
     convenience init(searchText: String, files: [FilesTree], mainController: ViewController) {
@@ -46,6 +46,7 @@ class SearchViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // Пользователь нажал кнопку выхода из аккаунта Dropbox, спрашивем действительно ли он хочет продолжить
     func signOut(sender: UIBarButtonItem) {
         let alert = UIAlertController(title: AppDelegate.dropboxEmail ?? "", message: "Are you sure you want to log out from Dropbox?", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: {(action: UIAlertAction!) in
@@ -65,7 +66,8 @@ class SearchViewController: UIViewController {
         let signoutButton = UIBarButtonItem(title: "Sign out", style: .plain, target: self, action: #selector(self.signOut(sender:)))
         navigationItem.rightBarButtonItem = signoutButton
         
-        // Selected file size/modified
+        // Строка, означающая что нет файлов, соответствующих искомому тексту
+        // Появляется если список найденных файлов пуст
         emptyFolder.textAlignment = .center
         emptyFolder.text = "Nothing found"
         emptyFolder.numberOfLines = 0
@@ -74,6 +76,7 @@ class SearchViewController: UIViewController {
         view.addSubview(emptyFolder)
         ViewController.performAutolayoutConstants(subview: emptyFolder, view: view, left: 0.0, right: 0.0, top: view.frame.height / 2 - view.frame.height / 2 / 3, bottom: -view.frame.height / 2)
         
+        // Table View для списка найденных файлов
         resultsTableView.tableFooterView = UIView(frame: .zero)
         searchDataSource = SearchDelegateDataSource(searchController: self, mainController: mainController!)
         resultsTableView.delegate = searchDataSource
@@ -81,6 +84,7 @@ class SearchViewController: UIViewController {
         view.addSubview(resultsTableView)
         ViewController.performAutolayoutConstants(subview: resultsTableView, view: view, left: 0.0, right: 0.0, top: 0.0, bottom: 0.0)
         
+        // Кнопка множественного прикрепления
         attachButton.backgroundColor = .white
         attachButton.setTitle("Attach", for: .normal)
         attachButton.setTitleColor(.red, for: .normal)
@@ -91,6 +95,7 @@ class SearchViewController: UIViewController {
         ViewController.performAutolayoutConstants(subview: attachButton, view: view, left: 0.0, right: 0.0, top: view.frame.height - 100, bottom: 0.0)
     }
     
+    // Селектор для прикрепления множества файлов, возвращает пользователя на входной экран
     func multipleSelection(sender: UIButton) {
         var selected: [FilesTree] = []
         for i in 0..<files.count {
@@ -112,6 +117,7 @@ class SearchViewController: UIViewController {
         _ = navigationController?.popToViewController(mainController!, animated: true)
     }
     
+    // Пользователь нажал кнопку возврата при неснятом выделении, спрашивем действительно ли он хочет продолжить
     func cancelSearch(sender: UIBarButtonItem) {
         if !attachButton.isHidden {
             let alert = UIAlertController(title: "Cancel selection?", message: "Are you sure you want to abandon selection?", preferredStyle: .alert)

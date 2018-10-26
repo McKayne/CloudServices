@@ -13,13 +13,14 @@ import SwiftyDropbox
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    static var dropboxEmail: String?
+    static var dropboxEmail: String? // email залогиненного в приложении пользователя
     
     // Экран залочен в портретной ориентации
     func application(_ applicaton: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
         return UIInterfaceOrientationMask.portrait
     }
 
+    // Аутентификация
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
         if let authResult = DropboxClientsManager.handleRedirectURL(url) {
             switch authResult {
@@ -32,7 +33,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                             print("USER")
            
                             AppDelegate.dropboxEmail = account.email
-                            ViewController.accountLabel.text = AppDelegate.dropboxEmail
                             print(account.email)
                         }
                     }
@@ -46,6 +46,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 
+    // Устанавливаем API key для Dropbox
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         DropboxClientsManager.setupWithAppKey("k6u0ir412spwuyc")
         return true

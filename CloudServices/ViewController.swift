@@ -11,9 +11,7 @@ import SwiftyDropbox
 
 class ViewController: UIViewController, UIPageViewControllerDelegate, UIPageViewControllerDataSource {
     
-    static let accountLabel = UILabel()
-    static var navBarHeight: CGFloat = 90.0
-    
+    // Page view для прокрутки выбранных файлов
     var pageView: UIPageViewController!
     var pages: [UIViewController] = []
     let pageControl = UIPageControl()
@@ -21,10 +19,10 @@ class ViewController: UIViewController, UIPageViewControllerDelegate, UIPageView
     // Navigation bar
     let defaultTitle = "Cloud Services"
     
-    // File previews
+    // Превью для файлов
     var filesTree = FilesTree(isDirectory: true, name: "Dummy")
     
-    // Selected files
+    // Список выбранных файлов
     var selectedFiles: [FilesTree] = []
     
     func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
@@ -33,6 +31,7 @@ class ViewController: UIViewController, UIPageViewControllerDelegate, UIPageView
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
     }
     
+    // Метод Page View dataSource для перехода к предыдущему выбранному файлу
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         let currentIndex = pages.index(of: viewController)!
         if currentIndex == 0 {
@@ -42,6 +41,7 @@ class ViewController: UIViewController, UIPageViewControllerDelegate, UIPageView
         return pages[previousIndex]
     }
     
+    // Метод Page View dataSource для перехода к следующему выбранному файлу
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         let currentIndex = pages.index(of: viewController)!
         if currentIndex == pages.count - 1 {
@@ -60,6 +60,8 @@ class ViewController: UIViewController, UIPageViewControllerDelegate, UIPageView
         subview.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: bottom).isActive = true
     }
     
+    // Dropbox API отдает приложению результаты запроса в некотором json-подобном формате, который не десериализируется через jsonDecoder.
+    // Следовательно нам необходимо сделать собственный десериалайзер
     func customDeserialization(client: DropboxClient, filesList: Files.ListFolderResultSerializer.ValueType, filesTree: FilesTree, path: String) -> FilesTree {
         
         let tags = filesList.description.components(separatedBy: [" ", ";"])
@@ -134,6 +136,8 @@ class ViewController: UIViewController, UIPageViewControllerDelegate, UIPageView
         return filesTree
     }
     
+    // Файлы и папки в приложении хранятся в виде дерева.
+    // Для построения дерева используем рекурсию
     func dropboxFilesList(path: String) -> FilesTree {
         var filesTree = FilesTree(isDirectory: true, name: "")
         
@@ -149,6 +153,7 @@ class ViewController: UIViewController, UIPageViewControllerDelegate, UIPageView
         return filesTree
     }
     
+    // Modality view, которое появляется, если пользователь тапнул по кнопке разлогина
     func signOut(sender: UIBarButtonItem) {
         let alert = UIAlertController(title: AppDelegate.dropboxEmail ?? "", message: "Are you sure you want to log out from Dropbox?", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: {(action: UIAlertAction!) in
@@ -162,13 +167,14 @@ class ViewController: UIViewController, UIPageViewControllerDelegate, UIPageView
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Аутентификация пользователя
         /*DropboxClientsManager.authorizeFromController(UIApplication.shared,
                                                       controller: self,
                                                       openURL: { (url: URL) -> Void in
                                                         UIApplication.shared.openURL(url)
         })*/
         
-        // Recursive files list
+        // Построение дерева файлов
         filesTree = dropboxFilesList(path: "")
         
         view.backgroundColor = .white
@@ -197,11 +203,13 @@ class ViewController: UIViewController, UIPageViewControllerDelegate, UIPageView
         // Dispose of any resources that can be recreated.
     }
     
+    // Селектор для появления экрана выбора файлов, пользователь попадает в корневую директорию
     func selectFiles(sender: UIBarButtonItem) {
         let filesListController = FilesListViewController(mainController: self, filesTree: filesTree)
         navigationController?.pushViewController(filesListController, animated: true)
     }
     
+    // Метод используется при обновлении дерева файлов в приложении, пользователь попадает в корневую директорию
     func selectFiles() {
         let filesListController = FilesListViewController(mainController: self, filesTree: filesTree)
         navigationController?.pushViewController(filesListController, animated: true)
